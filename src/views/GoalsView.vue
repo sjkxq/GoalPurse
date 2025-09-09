@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useGoalsStore } from '../store/goals'
 import GoalCard from '../components/GoalCard.vue'
 import GoalForm from '../components/GoalForm.vue'
@@ -46,7 +46,7 @@ const showAddForm = ref(false)
 const editingGoal = ref(null)
 
 // 计算属性
-const goals = store.goals
+const goals = computed(() => store.goals)
 
 // 方法
 const editGoal = (goal) => {
