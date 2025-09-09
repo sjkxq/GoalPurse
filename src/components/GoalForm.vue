@@ -27,12 +27,9 @@
       <div class="form-group">
         <label for="category">分类</label>
         <select id="category" v-model="form.category">
-          <option value="生活">生活</option>
-          <option value="娱乐">娱乐</option>
-          <option value="应急">应急</option>
-          <option value="旅行">旅行</option>
-          <option value="教育">教育</option>
-          <option value="其他">其他</option>
+          <option v-for="category in categories" :key="category" :value="category">
+            {{ category }}
+          </option>
         </select>
       </div>
     </div>
@@ -66,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 const props = defineProps({
   goal: {
@@ -77,6 +74,9 @@ const props = defineProps({
 
 const emit = defineEmits(['save', 'cancel'])
 
+// 分类数据
+const categories = ref(['生活', '娱乐', '应急', '旅行', '教育', '其他'])
+
 // 表单数据
 const form = ref({
   name: '',
@@ -84,6 +84,14 @@ const form = ref({
   category: '生活',
   deadline: '',
   description: ''
+})
+
+// 加载自定义分类
+onMounted(() => {
+  const savedCategories = localStorage.getItem('goalpurse-categories')
+  if (savedCategories) {
+    categories.value = JSON.parse(savedCategories)
+  }
 })
 
 // 如果是编辑模式，填充表单数据

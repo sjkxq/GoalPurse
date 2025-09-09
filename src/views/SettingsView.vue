@@ -1,0 +1,393 @@
+<template>
+  <div class="settings-view">
+    <header>
+      <h1>设置</h1>
+    </header>
+
+    <div class="settings-content">
+      <!-- 自定义分类设置 -->
+      <section class="settings-section">
+        <h2>自定义分类</h2>
+        <div class="categories-settings">
+          <div class="current-categories">
+            <h3>当前分类</h3>
+            <div class="category-list">
+              <div 
+                v-for="category in customCategories" 
+                :key="category"
+                class="category-item"
+              >
+                <span>{{ category }}</span>
+                <button @click="removeCategory(category)" class="remove-btn">删除</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-category">
+            <h3>添加新分类</h3>
+            <div class="add-category-form">
+              <input 
+                v-model="newCategory" 
+                type="text" 
+                placeholder="输入新分类名称"
+                @keyup.enter="addCategory"
+              >
+              <button @click="addCategory" :disabled="!newCategory.trim()">添加</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 颜色设置 -->
+      <section class="settings-section">
+        <h2>颜色设置</h2>
+        <div class="color-settings">
+          <div 
+            v-for="(color, name) in themeColors" 
+            :key="name"
+            class="color-setting-item"
+          >
+            <label>{{ getColorLabel(name) }}</label>
+            <div class="color-picker-container">
+              <input 
+                type="color" 
+                :value="color" 
+                @input="updateColor(name, $event.target.value)"
+              >
+              <span class="color-value">{{ color }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 操作按钮 -->
+      <div class="settings-actions">
+        <button @click="saveSettings" class="save-btn">保存设置</button>
+        <button @click="resetSettings" class="reset-btn">重置为默认</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
+import { useGoalsStore } from '../store/goals'
+
+const store = useGoalsStore()
+
+// 自定义分类
+const customCategories = ref([])
+const newCategory = ref('')
+
+// 主题颜色
+const themeColors = reactive({
+  primary: '#409eff',
+  success: '#42b983',
+  warning: '#e6a23c',
+  danger: '#ff6b6b',
+  info: '#909399',
+  background: '#f5f7fa',
+  cardBackground: '#ffffff',
+  textColor: '#2c3e50'
+})
+
+// 加载设置
+onMounted(() => {
+  loadCategories()
+  loadThemeColors()
+})
+
+// 加载自定义分类
+const loadCategories = () => {
+  const savedCategories = localStorage.getItem('goalpurse-categories')
+  if (savedCategories) {
+    customCategories.value = JSON.parse(savedCategories)
+  } else {
+    // 默认分类
+    customCategories.value = ['生活', '娱乐', '应急', '旅行', '教育', '其他']
+  }
+}
+
+// 加载主题颜色
+const loadThemeColors = () => {
+  const savedColors = localStorage.getItem('goalpurse-theme-colors')
+  if (savedColors) {
+    Object.assign(themeColors, JSON.parse(savedColors))
+  }
+}
+
+// 添加分类
+const addCategory = () => {
+  if (newCategory.value.trim() && !customCategories.value.includes(newCategory.value.trim())) {
+    customCategories.value.push(newCategory.value.trim())
+    newCategory.value = ''
+  }
+}
+
+// 删除分类
+const removeCategory = (category) => {
+  if (customCategories.value.length > 1) {
+    customCategories.value = customCategories.value.filter(c => c !== category)
+  } else {
+    alert('至少需要保留一个分类')
+  }
+}
+
+// 获取颜色标签
+const getColorLabel = (name) => {
+  const labels = {
+    primary: '主色调',
+    success: '成功色',
+    warning: '警告色',
+    danger: '危险色',
+    info: '信息色',
+    background: '背景色',
+    cardBackground: '卡片背景色',
+    textColor: '文字颜色'
+  }
+  return labels[name] || name
+}
+
+// 更新颜色
+const updateColor = (name, color) => {
+  themeColors[name] = color
+}
+
+// 保存设置
+const saveSettings = () => {
+  localStorage.setItem('goalpurse-categories', JSON.stringify(customCategories.value))
+  localStorage.setItem('goalpurse-theme-colors', JSON.stringify(themeColors))
+  applyThemeColors()
+  alert('设置已保存')
+}
+
+// 应用主题颜色
+const applyThemeColors = () => {
+  const root = document.documentElement
+  root.style.setProperty('--primary-color', themeColors.primary)
+  root.style.setProperty('--success-color', themeColors.success)
+  root.style.setProperty('--warning-color', themeColors.warning)
+  root.style.setProperty('--danger-color', themeColors.danger)
+  root.style.setProperty('--info-color', themeColors.info)
+  root.style.setProperty('--background-color', themeColors.background)
+  root.style.setProperty('--card-background-color', themeColors.cardBackground)
+  root.style.setProperty('--text-color', themeColors.textColor)
+}
+
+// 重置设置
+const resetSettings = () => {
+  if (confirm('确定要重置所有设置为默认值吗？')) {
+    // 重置分类
+    customCategories.value = ['生活', '娱乐', '应急', '旅行', '教育', '其他']
+    
+    // 重置颜色
+    Object.assign(themeColors, {
+      primary: '#409eff',
+      success: '#42b983',
+      warning: '#e6a23c',
+      danger: '#ff6b6b',
+      info: '#909399',
+      background: '#f5f7fa',
+      cardBackground: '#ffffff',
+      textColor: '#2c3e50'
+    })
+    
+    saveSettings()
+  }
+}
+</script>
+
+<style scoped>
+.settings-view {
+  padding: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header h1 {
+  margin: 0 0 30px 0;
+  font-size: 28px;
+}
+
+.settings-content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section {
+  margin-bottom: 40px;
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.settings-section h3 {
+  margin: 0 0 15px 0;
+  color: #555;
+}
+
+/* 分类设置样式 */
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+.category-item span {
+  margin-right: 10px;
+}
+
+.remove-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-category-form {
+  display: flex;
+  gap: 15px;
+}
+
+.add-category-form input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.add-category-form button {
+  padding: 12px 20px;
+  background: #409eff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-category-form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* 颜色设置样式 */
+.color-settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.color-setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.color-setting-item label {
+  font-weight: 500;
+  color: #333;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-picker-container input[type="color"] {
+  width: 50px;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.color-value {
+  font-family: monospace;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 操作按钮样式 */
+.settings-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.save-btn, .reset-btn {
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.save-btn {
+  background: #409eff;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #3388ff;
+}
+
+.reset-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.reset-btn:hover {
+  background: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .settings-view {
+    padding: 15px;
+  }
+  
+  .settings-content {
+    padding: 20px;
+  }
+  
+  .color-settings {
+    grid-template-columns: 1fr;
+  }
+  
+  .add-category-form {
+    flex-direction: column;
+  }
+  
+  .settings-actions {
+    flex-direction: column;
+  }
+}
+</style>

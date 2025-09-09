@@ -105,7 +105,7 @@ header h1 {
 }
 
 .add-button {
-  background-color: #42b983;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 50%;
@@ -153,7 +153,7 @@ header h1 {
 }
 
 .modal-content {
-  background: white;
+  background: var(--card-background-color);
   border-radius: 12px;
   padding: 30px;
   width: 90%;

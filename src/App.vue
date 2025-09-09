@@ -7,6 +7,9 @@
       <router-link to="/statistics" class="nav-link" :class="{ active: $route.name === 'Statistics' }">
         统计
       </router-link>
+      <router-link to="/settings" class="nav-link" :class="{ active: $route.name === 'Settings' }">
+        设置
+      </router-link>
     </nav>
     
     <main>

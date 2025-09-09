@@ -57,10 +57,10 @@ const goToDetail = () => {
 
 <style scoped>
 .goal-card {
-  background: white;
+  background: var(--card-background-color);
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--shadow-color);
   transition: transform 0.2s, box-shadow 0.2s;
   min-height: 200px;
   display: flex;
@@ -92,11 +92,12 @@ const goToDetail = () => {
 }
 
 .category-tag {
-  background-color: #e0e0e0;
+  background-color: var(--info-color);
   padding: 6px 12px;
   border-radius: 16px;
   font-size: 14px;
   white-space: nowrap;
+  color: white;
 }
 
 .progress-info {
@@ -108,7 +109,7 @@ const goToDetail = () => {
 
 .amount {
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
   font-size: 20px;
 }
 
@@ -140,17 +141,17 @@ const goToDetail = () => {
 }
 
 .card-actions button:nth-child(2) {
-  background-color: #ff6b6b;
+  background-color: var(--danger-color);
   color: white;
 }
 
 .card-actions button:nth-child(3) {
-  background-color: #42b983;
+  background-color: var(--success-color);
   color: white;
 }
 
 .card-actions button:last-child {
-  background-color: #409eff;
+  background-color: var(--primary-color);
   color: white;
 }
 </style>
