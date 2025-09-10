@@ -18,7 +18,7 @@
                 class="category-item"
               >
                 <span>{{ category }}</span>
-                <button @click="removeCategory(category)" class="remove-btn">删除</button>
+                <button @click="removeCategory(category)" class="remove-btn">×</button>
               </div>
             </div>
           </div>
@@ -431,61 +431,151 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .category-item {
   display: flex;
   align-items: center;
-  background: #f0f0f0;
+  background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
   padding: 8px 15px;
-  border-radius: 20px;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.category-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 .category-item span {
-  margin-right: 10px;
+  margin-right: 12px;
+  font-weight: 500;
+  color: #495057;
 }
 
 .remove-btn {
-  background: #ff6b6b;
+  position: relative;
+  background: linear-gradient(135deg, #ff6b6b 0%, #e03131 100%);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+  outline: none;
+  line-height: 1;
+  padding: 0;
+}
+
+.remove-btn:hover {
+  background: linear-gradient(135deg, #e03131 0%, #c92a2a 100%);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+  transform: scale(1.1);
+}
+
+.remove-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.remove-btn:hover::before {
+  opacity: 1;
+}
+
+.remove-btn:active {
+  transform: scale(1);
 }
 
 .add-category-form {
   display: flex;
   gap: 15px;
+  align-items: center;
 }
 
 .add-category-form input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 14px 16px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.add-category-form input:focus {
+  border-color: #409eff;
+  box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.2);
 }
 
 .add-category-form button {
-  padding: 12px 20px;
-  background: #409eff;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #409eff 0%, #2a7de0 100%);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(64, 158, 255, 0.3);
+  outline: none;
+  min-width: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-category-form button:hover {
+  background: linear-gradient(135deg, #3388ff 0%, #226bd0 100%);
+  box-shadow: 0 6px 15px rgba(64, 158, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.add-category-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.add-category-form button:hover::before {
+  opacity: 1;
+}
+
+.add-category-form button:active {
+  transform: translateY(0);
 }
 
 .add-category-form button:disabled {
-  background: #ccc;
+  background: linear-gradient(135deg, #c0c4cc 0%, #a9adb6 100%);
   cursor: not-allowed;
+  box-shadow: 0 2px 6px rgba(192, 196, 204, 0.3);
+  transform: none;
+}
+
+.add-category-form button:disabled::before {
+  display: none;
 }
 
 /* 颜色设置样式 */
