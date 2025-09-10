@@ -57,20 +57,22 @@ const goToDetail = () => {
 
 <style scoped>
 .goal-card {
-  background: var(--card-background-color);
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 4px 12px var(--shadow-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s, box-shadow 0.2s;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .goal-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #ffffff, #f0f4ff);
 }
 
 .goal-card.completed {

@@ -7,6 +7,7 @@
   --info-color: #909399;
   --background-color: #f5f7fa;
   --card-background-color: #ffffff;
+  --card-accent-color: #ffffff; /* 新增卡片背景色变体 */
   --text-color: #2c3e50;
   --border-color: #dcdfe6;
   --shadow-color: rgba(0, 0, 0, 0.1);
@@ -71,7 +72,7 @@ input:focus, select:focus, textarea:focus {
 
 /* 卡片样式 */
 .card {
-  background: var(--card-background-color);
+  background: linear-gradient(135deg, var(--card-background-color), var(--card-accent-color));
   border-radius: 8px;
   box-shadow: 0 2px 8px var(--shadow-color);
   padding: 20px;
