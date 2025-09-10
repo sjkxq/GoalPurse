@@ -477,6 +477,134 @@ header h1 {
   color: #666;
 }
 
+/* 数据导入导出样式 */
+.data-management {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.export-section,
+.import-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.export-section:hover,
+.import-section:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.export-section h3,
+.import-section h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.export-section p,
+.import-section p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.export-btn,
+.import-btn,
+.confirm-import-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #42b983 0%, #2c8d65 100%);
+  color: white;
+  min-width: 150px;
+}
+
+.export-btn:hover {
+  background: linear-gradient(135deg, #3aa873 0%, #257454 100%);
+  box-shadow: 0 6px 15px rgba(66, 185, 131, 0.3);
+  transform: translateY(-2px);
+}
+
+.export-btn:active {
+  transform: translateY(0);
+}
+
+.export-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.export-btn:hover::before {
+  opacity: 1;
+}
+
+.import-btn {
+  background: linear-gradient(135deg, #409eff 0%, #2a7de0 100%);
+  color: white;
+  min-width: 150px;
+}
+
+.import-btn:hover {
+  background: linear-gradient(135deg, #3388ff 0%, #226bd0 100%);
+  box-shadow: 0 6px 15px rgba(64, 158, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.import-btn:active {
+  transform: translateY(0);
+}
+
+.confirm-import-btn {
+  background: linear-gradient(135deg, #e6a23c 0%, #c68a2d 100%);
+  color: white;
+  min-width: 200px;
+  margin-top: 15px;
+}
+
+.confirm-import-btn:hover {
+  background: linear-gradient(135deg, #d6922c 0%, #b67a1d 100%);
+  box-shadow: 0 6px 15px rgba(230, 162, 60, 0.3);
+  transform: translateY(-2px);
+}
+
+.confirm-import-btn:active {
+  transform: translateY(0);
+}
+
+.export-btn:focus,
+.import-btn:focus,
+.confirm-import-btn:focus {
+  box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.3);
+}
+
 /* 操作按钮样式 */
 .settings-actions {
   display: flex;
