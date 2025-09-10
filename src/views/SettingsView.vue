@@ -60,6 +60,38 @@
         </div>
       </section>
 
+      <!-- 数据导入导出 -->
+      <section class="settings-section">
+        <h2>数据导入导出</h2>
+        <div class="data-management">
+          <div class="export-section">
+            <h3>导出数据</h3>
+            <p>将您的目标和记录导出为JSON文件，以便备份或在其他设备上使用。</p>
+            <button @click="exportData" class="export-btn">导出数据</button>
+          </div>
+          
+          <div class="import-section">
+            <h3>导入数据</h3>
+            <p>从JSON文件导入目标和记录。注意：这将覆盖您当前的数据。</p>
+            <input 
+              type="file" 
+              ref="fileInput" 
+              accept=".json" 
+              @change="handleFileSelect" 
+              style="display: none"
+            >
+            <button @click="triggerFileSelect" class="import-btn">选择文件导入</button>
+            <button 
+              v-if="selectedFileName" 
+              @click="importData" 
+              class="confirm-import-btn"
+            >
+              确认导入 "{{ selectedFileName }}"
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- 操作按钮 -->
       <div class="settings-actions">
         <button @click="saveSettings" class="save-btn">保存设置</button>
@@ -90,6 +122,10 @@ const themeColors = reactive({
   cardBackground: '#ffffff',
   textColor: '#2c3e50'
 })
+
+// 导入导出相关
+const fileInput = ref(null)
+const selectedFileName = ref('')
 
 // 加载设置
 onMounted(() => {
@@ -194,6 +230,115 @@ const resetSettings = () => {
     
     saveSettings()
   }
+}
+
+// 导出数据
+const exportData = () => {
+  try {
+    // 获取当前所有数据
+    const goalsData = localStorage.getItem('goalpurse-goals') || '[]'
+    const recordsData = localStorage.getItem('goalpurse-records') || '[]'
+    const categoriesData = localStorage.getItem('goalpurse-categories') || '[]'
+    const themeData = localStorage.getItem('goalpurse-theme-colors') || '{}'
+    
+    // 创建导出对象
+    const exportData = {
+      goals: JSON.parse(goalsData),
+      records: JSON.parse(recordsData),
+      categories: JSON.parse(categoriesData),
+      theme: JSON.parse(themeData),
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    }
+    
+    // 创建并下载文件
+    const dataStr = JSON.stringify(exportData, null, 2)
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr)
+    
+    const exportFileDefaultName = `goalpurse-export-${new Date().toISOString().slice(0, 10)}.json`
+    
+    const linkElement = document.createElement('a')
+    linkElement.setAttribute('href', dataUri)
+    linkElement.setAttribute('download', exportFileDefaultName)
+    linkElement.click()
+    
+    alert('数据导出成功!')
+  } catch (error) {
+    console.error('导出数据时出错:', error)
+    alert('导出数据时出错，请查看控制台了解详情')
+  }
+}
+
+// 触发文件选择
+const triggerFileSelect = () => {
+  fileInput.value.click()
+}
+
+// 处理文件选择
+const handleFileSelect = (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    selectedFileName.value = file.name
+  } else {
+    selectedFileName.value = ''
+  }
+}
+
+// 导入数据
+const importData = () => {
+  if (!fileInput.value.files.length) {
+    alert('请先选择一个文件')
+    return
+  }
+  
+  const file = fileInput.value.files[0]
+  const reader = new FileReader()
+  
+  reader.onload = (e) => {
+    try {
+      const importData = JSON.parse(e.target.result)
+      
+      // 确认是否导入
+      const confirmMsg = `确定要导入 "${file.name}" 中的数据吗？这将覆盖您当前的所有数据。`
+      if (!confirm(confirmMsg)) {
+        return
+      }
+      
+      // 导入数据到localStorage
+      if (importData.goals) {
+        localStorage.setItem('goalpurse-goals', JSON.stringify(importData.goals))
+      }
+      
+      if (importData.records) {
+        localStorage.setItem('goalpurse-records', JSON.stringify(importData.records))
+      }
+      
+      if (importData.categories) {
+        localStorage.setItem('goalpurse-categories', JSON.stringify(importData.categories))
+        customCategories.value = importData.categories
+      }
+      
+      if (importData.theme) {
+        localStorage.setItem('goalpurse-theme-colors', JSON.stringify(importData.theme))
+        Object.assign(themeColors, importData.theme)
+        applyThemeColors()
+      }
+      
+      // 重新加载store数据
+      store.loadFromLocalStorage()
+      
+      alert('数据导入成功!')
+      
+      // 清空文件选择
+      fileInput.value.value = ''
+      selectedFileName.value = ''
+    } catch (error) {
+      console.error('导入数据时出错:', error)
+      alert('导入数据时出错，请确保选择的是有效的JSON文件')
+    }
+  }
+  
+  reader.readAsText(file)
 }
 </script>
 
