@@ -18,7 +18,19 @@
                 class="category-item"
               >
                 <span>{{ category }}</span>
-                <button @click="removeCategory(category)" class="remove-btn">×</button>
+                <button 
+                  @click="toggleCategoryLock(category)" 
+                  class="lock-btn"
+                  :class="{ 'locked': lockedCategories.includes(category) }"
+                  :title="lockedCategories.includes(category) ? '解锁分类' : '锁定分类'"
+                >
+                  {{ lockedCategories.includes(category) ? '🔒' : '🔓' }}
+                </button>
+                <button 
+                  @click="removeCategory(category)" 
+                  class="remove-btn"
+                  :disabled="lockedCategories.includes(category)"
+                >×</button>
               </div>
             </div>
           </div>
@@ -113,6 +125,9 @@ const customCategories = ref([])
 const newCategory = ref('')
 const originalCategories = ref([])
 
+// 锁定的分类
+const lockedCategories = ref([])
+
 // 主题颜色
 const themeColors = reactive({
   primary: '#409eff',
@@ -137,6 +152,7 @@ const settingsChanged = ref(false)
 onMounted(() => {
   loadCategories()
   loadThemeColors()
+  loadLockedCategories()
   // 保存初始状态用于比较
   originalCategories.value = [...customCategories.value]
   Object.assign(originalThemeColors, JSON.parse(JSON.stringify(themeColors)))
@@ -150,6 +166,14 @@ const loadCategories = () => {
   } else {
     // 默认分类
     customCategories.value = ['生活', '娱乐', '应急', '旅行', '教育', '其他']
+  }
+}
+
+// 加载锁定的分类
+const loadLockedCategories = () => {
+  const savedLockedCategories = localStorage.getItem('goalpurse-locked-categories')
+  if (savedLockedCategories) {
+    lockedCategories.value = JSON.parse(savedLockedCategories)
   }
 }
 
@@ -172,12 +196,35 @@ const addCategory = () => {
 
 // 删除分类
 const removeCategory = (category) => {
+  // 检查分类是否被锁定
+  if (lockedCategories.value.includes(category)) {
+    alert('无法删除已锁定的分类')
+    return
+  }
+  
   if (customCategories.value.length > 1) {
     customCategories.value = customCategories.value.filter(c => c !== category)
     checkSettingsChanged()
   } else {
     alert('至少需要保留一个分类')
   }
+}
+
+// 切换分类锁定状态
+const toggleCategoryLock = (category) => {
+  if (lockedCategories.value.includes(category)) {
+    // 解锁分类
+    lockedCategories.value = lockedCategories.value.filter(c => c !== category)
+  } else {
+    // 锁定分类
+    lockedCategories.value.push(category)
+  }
+  saveLockedCategories()
+}
+
+// 保存锁定的分类
+const saveLockedCategories = () => {
+  localStorage.setItem('goalpurse-locked-categories', JSON.stringify(lockedCategories.value))
 }
 
 // 获取颜色标签
@@ -235,6 +282,7 @@ const applyThemeColors = () => {
 const saveSettings = () => {
   localStorage.setItem('goalpurse-categories', JSON.stringify(customCategories.value))
   localStorage.setItem('goalpurse-theme-colors', JSON.stringify(themeColors))
+  localStorage.setItem('goalpurse-locked-categories', JSON.stringify(lockedCategories.value))
   applyThemeColors()
   // 更新原始状态
   originalCategories.value = [...customCategories.value]
@@ -248,6 +296,10 @@ const resetSettings = () => {
   if (confirm('确定要重置所有设置为默认值吗？')) {
     // 重置分类
     customCategories.value = ['生活', '娱乐', '应急', '旅行', '教育', '其他']
+    
+    // 清空锁定分类
+    lockedCategories.value = []
+    saveLockedCategories()
     
     // 重置颜色
     Object.assign(themeColors, {
@@ -455,6 +507,37 @@ header h1 {
   color: #495057;
 }
 
+.lock-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  margin-right: 6px;
+  padding: 0;
+  color: #6c757d;
+}
+
+.lock-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #495057;
+}
+
+.lock-btn.locked {
+  color: #409eff;
+}
+
+.lock-btn.locked:hover {
+  background: rgba(64, 158, 255, 0.1);
+  color: #1890ff;
+}
+
 .remove-btn {
   position: relative;
   background: linear-gradient(135deg, #ff6b6b 0%, #e03131 100%);
@@ -482,6 +565,13 @@ header h1 {
   transform: scale(1.1);
 }
 
+.remove-btn:disabled {
+  background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(173, 181, 189, 0.3);
+}
+
 .remove-btn::before {
   content: '';
   position: absolute;
@@ -495,7 +585,7 @@ header h1 {
   transition: opacity 0.3s ease;
 }
 
-.remove-btn:hover::before {
+.remove-btn:hover:not(:disabled)::before {
   opacity: 1;
 }
 
