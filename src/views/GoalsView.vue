@@ -162,6 +162,7 @@ header h1 {
   overflow-y: auto;
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .goals-view {
     padding: 15px;
@@ -180,6 +181,66 @@ header h1 {
     width: 50px;
     height: 50px;
     font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .goals-view {
+    padding: 10px;
+  }
+  
+  .goals-list {
+    gap: 15px;
+  }
+  
+  header {
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 22px;
+  }
+  
+  .add-button {
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
+  }
+  
+  .empty-state {
+    padding: 40px 20px;
+  }
+  
+  .empty-state p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+}
+
+@media (max-width: 400px) {
+  header h1 {
+    font-size: 20px;
+  }
+  
+  .add-button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .goals-list {
+    gap: 10px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .goals-list {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
 }
 </style>

@@ -273,6 +273,7 @@ const categoryStats = computed(() => {
   font-size: 18px;
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .charts-section {
     grid-template-columns: 1fr;
@@ -289,6 +290,147 @@ const categoryStats = computed(() => {
   .completion-stats {
     flex-direction: column;
     gap: 30px;
+  }
+  
+  .statistics-view {
+    padding: 15px;
+  }
+  
+  .statistics-view h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  
+  .summary-stats {
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .stat-card {
+    padding: 25px;
+  }
+  
+  .charts-section {
+    gap: 20px;
+  }
+  
+  .chart-container {
+    padding: 25px;
+  }
+  
+  .chart-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .completion-value {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 576px) {
+  .statistics-view {
+    padding: 10px;
+  }
+  
+  .statistics-view h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .summary-stats {
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .stat-label {
+    font-size: 16px;
+  }
+  
+  .charts-section {
+    gap: 15px;
+  }
+  
+  .chart-container {
+    padding: 20px;
+  }
+  
+  .chart-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .category-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .category-percent {
+    text-align: left;
+  }
+  
+  .completion-stats {
+    gap: 20px;
+    padding: 10px 0;
+  }
+  
+  .completion-value {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .completion-label {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .statistics-view h1 {
+    font-size: 22px;
+  }
+  
+  .stat-value {
+    font-size: 22px;
+  }
+  
+  .stat-label {
+    font-size: 15px;
+  }
+  
+  .chart-container h2 {
+    font-size: 18px;
+  }
+  
+  .category-name,
+  .category-amount {
+    font-size: 15px;
+  }
+  
+  .category-percent {
+    font-size: 15px;
+  }
+  
+  .completion-value {
+    font-size: 32px;
+  }
+  
+  .completion-label {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .charts-section {
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
   }
 }
 </style>

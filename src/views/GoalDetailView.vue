@@ -521,6 +521,7 @@ onMounted(() => {
   color: #666;
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .goal-detail-view {
     padding: 15px;
@@ -544,6 +545,150 @@ onMounted(() => {
   .goal-meta {
     flex-direction: column;
     gap: 10px;
+  }
+  
+  .goal-header h1 {
+    font-size: 28px;
+  }
+  
+  .amount-display .value {
+    font-size: 22px;
+  }
+  
+  .action-button {
+    padding: 16px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .goal-detail-view {
+    padding: 10px;
+  }
+  
+  .goal-header {
+    margin-bottom: 25px;
+  }
+  
+  .goal-header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .goal-progress {
+    padding: 20px;
+  }
+  
+  .amount-display .label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .amount-display .value {
+    font-size: 20px;
+  }
+  
+  .separator {
+    font-size: 24px;
+  }
+  
+  .progress-percent {
+    font-size: 18px;
+  }
+  
+  .actions-section {
+    margin-bottom: 25px;
+    gap: 15px;
+  }
+  
+  .action-button {
+    padding: 14px;
+    font-size: 15px;
+  }
+  
+  .records-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .record-item {
+    padding: 15px;
+  }
+  
+  .record-amount {
+    font-size: 18px;
+  }
+  
+  .record-remark {
+    font-size: 14px;
+  }
+  
+  .record-date {
+    font-size: 12px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+  
+  .record-form {
+    gap: 15px;
+  }
+  
+  .record-form .form-group label {
+    font-size: 15px;
+  }
+  
+  .record-form .form-group input {
+    padding: 12px;
+    font-size: 15px;
+  }
+  
+  .record-form .form-actions {
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .record-form .form-actions button {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .goal-header h1 {
+    font-size: 22px;
+  }
+  
+  .goal-meta {
+    font-size: 14px;
+  }
+  
+  .category {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
+  .amount-display .label {
+    font-size: 13px;
+  }
+  
+  .amount-display .value {
+    font-size: 18px;
+  }
+  
+  .separator {
+    font-size: 20px;
+  }
+  
+  .progress-percent {
+    font-size: 16px;
+  }
+  
+  .action-button {
+    padding: 12px;
+    font-size: 14px;
   }
 }
 </style>

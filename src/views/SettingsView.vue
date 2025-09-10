@@ -369,6 +369,7 @@ header h1 {
   background: #e0e0e0;
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .settings-view {
     padding: 15px;
@@ -388,6 +389,132 @@ header h1 {
   
   .settings-actions {
     flex-direction: column;
+  }
+  
+  header h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .settings-section {
+    margin-bottom: 30px;
+  }
+  
+  .settings-section h2 {
+    font-size: 22px;
+  }
+  
+  .settings-section h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .settings-view {
+    padding: 10px;
+  }
+  
+  .settings-content {
+    padding: 15px;
+  }
+  
+  header h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .settings-section {
+    margin-bottom: 25px;
+  }
+  
+  .settings-section h2 {
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
+  
+  .settings-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .category-list {
+    gap: 10px;
+  }
+  
+  .category-item {
+    padding: 6px 12px;
+  }
+  
+  .add-category-form {
+    gap: 10px;
+  }
+  
+  .add-category-form input {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+  
+  .add-category-form button {
+    padding: 10px 15px;
+    font-size: 15px;
+  }
+  
+  .color-setting-item {
+    gap: 8px;
+  }
+  
+  .color-picker-container {
+    gap: 8px;
+  }
+  
+  .color-picker-container input[type="color"] {
+    width: 40px;
+    height: 35px;
+  }
+  
+  .color-value {
+    font-size: 13px;
+  }
+  
+  .settings-actions {
+    gap: 15px;
+    padding-top: 15px;
+  }
+  
+  .save-btn, .reset-btn {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  header h1 {
+    font-size: 20px;
+  }
+  
+  .settings-section h2 {
+    font-size: 18px;
+  }
+  
+  .settings-section h3 {
+    font-size: 16px;
+  }
+  
+  .add-category-form input {
+    font-size: 14px;
+  }
+  
+  .add-category-form button {
+    font-size: 14px;
+  }
+  
+  .color-value {
+    font-size: 12px;
+  }
+  
+  .save-btn, .reset-btn {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }
 </style>

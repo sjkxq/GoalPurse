@@ -154,4 +154,108 @@ const goToDetail = () => {
   background-color: var(--primary-color);
   color: white;
 }
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .goal-card {
+    padding: 20px;
+  }
+  
+  .card-header h3 {
+    font-size: 20px;
+  }
+  
+  .category-tag {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  
+  .amount {
+    font-size: 18px;
+  }
+  
+  .deadline {
+    font-size: 14px;
+  }
+  
+  .card-actions button {
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .goal-card {
+    padding: 15px;
+    min-height: 180px;
+  }
+  
+  .card-header {
+    margin-bottom: 15px;
+  }
+  
+  .card-header h3 {
+    font-size: 18px;
+  }
+  
+  .category-tag {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .progress-info {
+    margin-bottom: 15px;
+  }
+  
+  .amount {
+    font-size: 16px;
+  }
+  
+  .deadline {
+    font-size: 13px;
+  }
+  
+  .card-actions {
+    gap: 8px;
+    margin-top: 15px;
+  }
+  
+  .card-actions button {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .goal-card {
+    padding: 12px;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .card-header h3 {
+    font-size: 16px;
+  }
+  
+  .progress-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .amount {
+    font-size: 15px;
+  }
+  
+  .deadline {
+    font-size: 12px;
+  }
+  
+  .card-actions {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

@@ -66,4 +66,34 @@
 main {
   padding: 25px 0;
 }
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 10px;
+  }
+  
+  .nav-link {
+    padding: 15px 15px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: 0 5px;
+  }
+  
+  .nav-link {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav-link {
+    padding: 12px 5px;
+    font-size: 14px;
+  }
+}
 </style>
