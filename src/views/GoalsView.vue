@@ -7,7 +7,7 @@
     
     <div v-if="goals.length === 0" class="empty-state">
       <p>还没有储蓄目标，创建第一个目标吧！</p>
-      <button @click="showAddForm = true">创建目标</button>
+      <button @click="showAddForm = true" class="create-goal-btn">创建目标</button>
     </div>
     
     <div v-else class="goals-list">
@@ -133,6 +133,25 @@ header h1 {
   margin-bottom: 30px;
 }
 
+.create-goal-btn {
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  background: #409eff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+}
+
+.create-goal-btn:hover {
+  background: #3388ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(64, 158, 255, 0.4);
+}
+
 .goals-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -182,6 +201,20 @@ header h1 {
     height: 50px;
     font-size: 24px;
   }
+  
+  .empty-state {
+    padding: 40px 20px;
+  }
+  
+  .empty-state p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .create-goal-btn {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -220,6 +253,11 @@ header h1 {
     padding: 20px;
     width: 95%;
   }
+  
+  .create-goal-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -235,6 +273,11 @@ header h1 {
   
   .goals-list {
     gap: 10px;
+  }
+  
+  .create-goal-btn {
+    padding: 8px 16px;
+    font-size: 13px;
   }
 }
 
