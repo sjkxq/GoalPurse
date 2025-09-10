@@ -104,12 +104,14 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useGoalsStore } from '../store/goals'
+import { onBeforeRouteLeave } from 'vue-router'
 
 const store = useGoalsStore()
 
 // 自定义分类
 const customCategories = ref([])
 const newCategory = ref('')
+const originalCategories = ref([])
 
 // 主题颜色
 const themeColors = reactive({
@@ -122,15 +124,22 @@ const themeColors = reactive({
   cardBackground: '#ffffff',
   textColor: '#2c3e50'
 })
+const originalThemeColors = reactive({})
 
 // 导入导出相关
 const fileInput = ref(null)
 const selectedFileName = ref('')
 
+// 标记设置是否已更改
+const settingsChanged = ref(false)
+
 // 加载设置
 onMounted(() => {
   loadCategories()
   loadThemeColors()
+  // 保存初始状态用于比较
+  originalCategories.value = [...customCategories.value]
+  Object.assign(originalThemeColors, JSON.parse(JSON.stringify(themeColors)))
 })
 
 // 加载自定义分类
@@ -157,6 +166,7 @@ const addCategory = () => {
   if (newCategory.value.trim() && !customCategories.value.includes(newCategory.value.trim())) {
     customCategories.value.push(newCategory.value.trim())
     newCategory.value = ''
+    checkSettingsChanged()
   }
 }
 
@@ -164,6 +174,7 @@ const addCategory = () => {
 const removeCategory = (category) => {
   if (customCategories.value.length > 1) {
     customCategories.value = customCategories.value.filter(c => c !== category)
+    checkSettingsChanged()
   } else {
     alert('至少需要保留一个分类')
   }
@@ -187,14 +198,24 @@ const getColorLabel = (name) => {
 // 更新颜色
 const updateColor = (name, color) => {
   themeColors[name] = color
+  checkSettingsChanged()
 }
 
-// 保存设置
-const saveSettings = () => {
-  localStorage.setItem('goalpurse-categories', JSON.stringify(customCategories.value))
-  localStorage.setItem('goalpurse-theme-colors', JSON.stringify(themeColors))
-  applyThemeColors()
-  alert('设置已保存')
+// 检查设置是否已更改
+const checkSettingsChanged = () => {
+  // 检查分类是否更改
+  if (JSON.stringify(originalCategories.value) !== JSON.stringify(customCategories.value)) {
+    settingsChanged.value = true
+    return
+  }
+  
+  // 检查主题颜色是否更改
+  if (JSON.stringify(originalThemeColors) !== JSON.stringify(themeColors)) {
+    settingsChanged.value = true
+    return
+  }
+  
+  settingsChanged.value = false
 }
 
 // 应用主题颜色
@@ -208,6 +229,18 @@ const applyThemeColors = () => {
   root.style.setProperty('--background-color', themeColors.background)
   root.style.setProperty('--card-background-color', themeColors.cardBackground)
   root.style.setProperty('--text-color', themeColors.textColor)
+}
+
+// 保存设置
+const saveSettings = () => {
+  localStorage.setItem('goalpurse-categories', JSON.stringify(customCategories.value))
+  localStorage.setItem('goalpurse-theme-colors', JSON.stringify(themeColors))
+  applyThemeColors()
+  // 更新原始状态
+  originalCategories.value = [...customCategories.value]
+  Object.assign(originalThemeColors, JSON.parse(JSON.stringify(themeColors)))
+  settingsChanged.value = false
+  alert('设置已保存')
 }
 
 // 重置设置
@@ -228,6 +261,7 @@ const resetSettings = () => {
       textColor: '#2c3e50'
     })
     
+    checkSettingsChanged()
     saveSettings()
   }
 }
@@ -283,6 +317,21 @@ const handleFileSelect = (event) => {
     selectedFileName.value = ''
   }
 }
+
+// 路由守卫：在离开页面前检查是否保存了更改
+onBeforeRouteLeave((to, from, next) => {
+  checkSettingsChanged()
+  if (settingsChanged.value) {
+    const answer = window.confirm('您有未保存的设置更改，确定要离开此页面吗？')
+    if (answer) {
+      next()
+    } else {
+      next(false)
+    }
+  } else {
+    next()
+  }
+})
 
 // 导入数据
 const importData = () => {
