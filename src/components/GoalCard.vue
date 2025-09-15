@@ -1,25 +1,31 @@
 <template>
+  <!-- 目标卡片容器 -->
   <div class="goal-card" :class="{ completed: goal.isCompleted }" @click="goToDetail">
+    <!-- 卡片头部，显示目标名称和分类 -->
     <div class="card-header">
       <h3>{{ goal.name }}</h3>
       <span class="category-tag">{{ goal.category }}</span>
     </div>
     
+    <!-- 进度信息区域 -->
     <div class="progress-info">
       <div class="amount">
         ¥{{ goal.currentAmount.toFixed(2) }} / ¥{{ goal.targetAmount.toFixed(2) }}
       </div>
+      <!-- 截止日期 -->
       <div class="deadline" v-if="goal.deadline">
         截止: {{ formatDate(goal.deadline) }}
       </div>
     </div>
     
+    <!-- 进度条组件 -->
     <ProgressBar 
       :current="goal.currentAmount" 
       :target="goal.targetAmount" 
       :completed="goal.isCompleted"
     />
     
+    <!-- 操作按钮区域 -->
     <div class="card-actions">
       <button @click.stop="$emit('edit', goal)">编辑</button>
       <button @click.stop="$emit('delete', goal.id)">删除</button>
@@ -35,21 +41,44 @@
 import { useRouter } from 'vue-router'
 import ProgressBar from './ProgressBar.vue'
 
+/**
+ * 定义组件的属性
+ */
 const props = defineProps({
+  /**
+   * 目标对象，必须提供
+   * @type {Object}
+   * @required
+   */
   goal: {
     type: Object,
     required: true
   }
 })
 
+/**
+ * 定义组件的事件
+ */
 const emit = defineEmits(['edit', 'delete', 'complete'])
 
+/**
+ * 路由实例
+ * @type {Object}
+ */
 const router = useRouter()
 
+/**
+ * 格式化日期为中文格式
+ * @param {Date|string} date - 日期对象或日期字符串
+ * @returns {string} 格式化后的日期字符串
+ */
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString('zh-CN')
 }
 
+/**
+ * 跳转到目标详情页面
+ */
 const goToDetail = () => {
   router.push(`/goal/${props.goal.id}`)
 }

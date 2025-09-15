@@ -16,21 +16,43 @@
 <script setup>
 import { computed } from 'vue'
 
+/**
+ * 定义组件属性
+ */
 const props = defineProps({
+  /**
+   * 当前进度值
+   * @type {number}
+   * @required
+   */
   current: {
     type: Number,
     required: true
   },
+  /**
+   * 目标值
+   * @type {number}
+   * @required
+   */
   target: {
     type: Number,
     required: true
   },
+  /**
+   * 是否已完成
+   * @type {boolean}
+   * @default false
+   */
   completed: {
     type: Boolean,
     default: false
   }
 })
 
+/**
+ * 计算进度百分比
+ * @returns {number} 进度百分比，范围在0-100之间
+ */
 const progressPercent = computed(() => {
   if (props.completed) return 100
   if (props.target <= 0) return 0
@@ -38,6 +60,10 @@ const progressPercent = computed(() => {
   return percent
 })
 
+/**
+ * 根据进度确定进度条样式类
+ * @returns {string} 样式类名
+ */
 const progressClass = computed(() => {
   if (props.completed) return 'completed'
   if (progressPercent.value < 30) return 'low'
@@ -68,18 +94,30 @@ const progressClass = computed(() => {
   border-radius: 10px;
 }
 
+/**
+ * 低进度样式（0-29%）
+ */
 .progress-fill.low {
   background-color: #409eff;
 }
 
+/**
+ * 中等进度样式（30-69%）
+ */
 .progress-fill.medium {
   background-color: #ffcc00;
 }
 
+/**
+ * 高进度样式（70-99%）
+ */
 .progress-fill.high {
   background-color: #42b983;
 }
 
+/**
+ * 已完成样式（100%）
+ */
 .progress-fill.completed {
   background-color: #42b983;
 }
