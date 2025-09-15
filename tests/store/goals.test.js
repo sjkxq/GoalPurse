@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { useGoalsStore } from './goals.js'
+import { useGoalsStore } from '../../src/store/goals.js'
 
 // Mock localStorage
 const localStorageMock = (() => {

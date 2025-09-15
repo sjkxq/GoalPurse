@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import ProgressBar from './ProgressBar.vue'
+import ProgressBar from '../../src/components/ProgressBar.vue'
 
 describe('ProgressBar', () => {
   it('renders progress correctly', () => {

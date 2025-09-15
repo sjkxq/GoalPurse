@@ -22,7 +22,7 @@ export default defineConfig({
     // 设置全局API
     globals: true,
     // 测试文件目录
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}', 'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     // 测试环境设置
     environmentOptions: {
       jsdom: {
@@ -32,7 +32,7 @@ export default defineConfig({
     // 覆盖率设置
     coverage: {
       reporter: ['text', 'json', 'html'],
-      include: ['src/**/*.{js,ts,vue}'],
+      include: ['src/**/*.{js,ts,vue}', 'tests/**/*.{js,ts,vue}'],
       exclude: ['src/main.js', 'src/router/**', 'src/**/*.d.ts']
     }
   }
