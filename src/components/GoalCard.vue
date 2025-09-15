@@ -1,5 +1,5 @@
 <template>
-  <div class="goal-card" :class="{ completed: goal.isCompleted }">
+  <div class="goal-card" :class="{ completed: goal.isCompleted }" @click="goToDetail">
     <div class="card-header">
       <h3>{{ goal.name }}</h3>
       <span class="category-tag">{{ goal.category }}</span>
@@ -21,12 +21,12 @@
     />
     
     <div class="card-actions">
-      <button @click="$emit('edit', goal)">编辑</button>
-      <button @click="$emit('delete', goal.id)">删除</button>
-      <button @click="$emit('complete', goal.id)">
+      <button @click.stop="$emit('edit', goal)">编辑</button>
+      <button @click.stop="$emit('delete', goal.id)">删除</button>
+      <button @click.stop="$emit('complete', goal.id)">
         {{ goal.isCompleted ? '取消完成' : '标记完成' }}
       </button>
-      <button @click="goToDetail">详情</button>
+      <button @click.stop="goToDetail">详情</button>
     </div>
   </div>
 </template>
@@ -61,12 +61,13 @@ const goToDetail = () => {
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .goal-card:hover {
@@ -77,6 +78,11 @@ const goToDetail = () => {
 
 .goal-card.completed {
   opacity: 0.7;
+}
+
+.goal-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
