@@ -12,6 +12,10 @@ export default defineConfig({
     host: true,
     port: 3000,
   },
+  preview: {
+    host: true,
+    port: 4590,
+  },
   build: {
     // 为较低版本 Node.js 提供兼容性支持
     target: ['es2015']
