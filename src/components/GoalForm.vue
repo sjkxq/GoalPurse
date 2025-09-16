@@ -65,28 +65,71 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 
+/**
+ * 定义组件属性
+ */
 const props = defineProps({
+  /**
+   * 目标对象，用于编辑模式
+   * @type {Object|null}
+   * @default null
+   */
   goal: {
     type: Object,
     default: null
   }
 })
 
+/**
+ * 定义组件事件
+ */
 const emit = defineEmits(['save', 'cancel'])
 
-// 分类数据
+/**
+ * 预定义的分类列表
+ * @type {Array<string>}
+ */
 const categories = ref(['生活', '娱乐', '应急', '旅行', '教育', '其他'])
 
-// 表单数据
+/**
+ * 表单数据对象
+ * @type {Object}
+ */
 const form = ref({
+  /**
+   * 目标名称
+   * @type {string}
+   */
   name: '',
+  
+  /**
+   * 目标金额
+   * @type {number}
+   */
   targetAmount: 0,
+  
+  /**
+   * 目标分类
+   * @type {string}
+   */
   category: '生活',
+  
+  /**
+   * 截止日期
+   * @type {string}
+   */
   deadline: '',
+  
+  /**
+   * 目标描述
+   * @type {string}
+   */
   description: ''
 })
 
-// 加载自定义分类
+/**
+ * 组件挂载时加载自定义分类
+ */
 onMounted(() => {
   const savedCategories = localStorage.getItem('goalpurse-categories')
   if (savedCategories) {
@@ -94,7 +137,9 @@ onMounted(() => {
   }
 })
 
-// 如果是编辑模式，填充表单数据
+/**
+ * 监听目标属性变化，用于编辑模式下填充表单数据
+ */
 watch(() => props.goal, (newGoal) => {
   if (newGoal) {
     form.value = {
@@ -107,6 +152,10 @@ watch(() => props.goal, (newGoal) => {
   }
 }, { immediate: true })
 
+/**
+ * 提交表单处理函数
+ * 验证表单数据并触发保存事件
+ */
 const submitForm = () => {
   // 验证表单
   if (!form.value.name || form.value.targetAmount <= 0) {
