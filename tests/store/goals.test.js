@@ -211,4 +211,60 @@ describe('Goals Store', () => {
     // 测试 getCompletionRate getter
     expect(store.getCompletionRate).toBe(50)
   })
+
+  it('deletes a goal and its associated records', () => {
+    const store = useGoalsStore()
+    const goalData = { name: 'Test Goal', targetAmount: 1000, category: 'Test' }
+
+    store.addGoal(goalData)
+    const goalId = store.goals[0].id
+    
+    // 添加一些记录
+    store.addRecord({ goalId, amount: 100, remark: 'Record 1' })
+    store.addRecord({ goalId, amount: 200, remark: 'Record 2' })
+    
+    expect(store.goals).toHaveLength(1)
+    expect(store.records).toHaveLength(2)
+    
+    // 删除目标
+    store.deleteGoal(goalId)
+    
+    expect(store.goals).toHaveLength(0)
+    expect(store.records).toHaveLength(0)
+  })
+
+  it('deletes a record and updates goal amount', () => {
+    const store = useGoalsStore()
+    const goalData = { name: 'Test Goal', targetAmount: 1000, category: 'Test' }
+
+    store.addGoal(goalData)
+    const goalId = store.goals[0].id
+    
+    // 添加记录并保存ID
+    store.addRecord({ goalId, amount: 100, remark: 'Record 1' })
+    const firstRecordId = store.records[0].id
+    
+    // 添加一个小延迟以确保ID不同
+    return new Promise(resolve => {
+      setTimeout(() => {
+        store.addRecord({ goalId, amount: 200, remark: 'Record 2' })
+        const secondRecordId = store.records[1].id
+        
+        expect(store.goals[0].currentAmount).toBe(300)
+        expect(store.records).toHaveLength(2)
+        
+        // 删除第一条记录
+        store.deleteRecord(firstRecordId)
+        
+        expect(store.goals[0].currentAmount).toBe(200)
+        expect(store.records).toHaveLength(1)
+        
+        // 确保删除的是正确的记录
+        expect(store.records.find(r => r.id === firstRecordId)).toBeUndefined()
+        expect(store.records.find(r => r.id === secondRecordId)).toBeDefined()
+        
+        resolve()
+      }, 1)
+    })
+  })
 })
