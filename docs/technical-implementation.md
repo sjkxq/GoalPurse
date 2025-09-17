@@ -42,12 +42,24 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
   goals: [
     {
       id: string,
-      title: string,
+      name: string,
       description: string,
-      target: number,
-      current: number,
-      unit: string,
-      createdAt: string
+      targetAmount: number,
+      currentAmount: number,
+      category: string,
+      deadline: Date,
+      isCompleted: boolean,
+      createdAt: Date,
+      updatedAt: Date
+    }
+  ],
+  records: [
+    {
+      id: string,
+      goalId: string,
+      amount: number,
+      description: string,
+      recordedAt: Date
     }
   ]
 }
@@ -56,7 +68,7 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 ### 核心功能
 - 响应式状态管理
 - 数据持久化集成
-- 加密存储支持
+- 目标和进度记录管理
 
 ### 路由管理 (Vue Router)
 
@@ -64,7 +76,7 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 ```javascript
 [
   { path: '/', component: GoalsView },
-  { path: '/goal/:id', component: GoalDetailView },
+  { path: '/goal/:id', component: GoalDetailView, props: true },
   { path: '/statistics', component: StatisticsView },
   { path: '/settings', component: SettingsView }
 ]
@@ -73,19 +85,19 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 ### 路由特性
 - 单页面应用路由
 - 动态路由参数
-- 导航守卫支持
+- 路由组件懒加载
 
 ### 数据持久化
 
 ### localStorage 集成
 - 自动同步 Store 状态到 localStorage
-- 数据加密存储保护用户隐私
+- 数据持久化存储保护用户数据
 
-### 加密方案
-使用 CryptoJS 库进行数据加密：
-- AES 加密算法
-- 动态密钥生成
-- 数据完整性校验
+### 数据结构
+- Goals: 存储所有目标信息
+- Records: 存储进度更新记录
+- Categories: 存储自定义分类
+- Theme: 存储主题颜色设置
 
 ### 组件系统
 
@@ -98,6 +110,12 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 1. **GoalCard** - 目标展示卡片
 2. **ProgressBar** - 进度可视化组件
 3. **GoalForm** - 目标表单组件
+
+### UI 组件
+1. **GoalsView** - 目标管理主界面
+2. **GoalDetailView** - 目标详情界面
+3. **StatisticsView** - 统计数据界面
+4. **SettingsView** - 设置界面
 
 ## 移动端适配方案
 
@@ -129,7 +147,7 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 ## 安全实现
 
 ### 数据安全
-- 本地数据加密存储
+- 本地数据存储保护
 - 敏感信息保护
 - 数据完整性校验
 
@@ -161,3 +179,20 @@ GoalPurse 采用现代前端架构模式，基于 Vue 3 组件化开发：
 - APK 构建和签名
 - 应用商店发布
 - 版本更新机制
+
+## 主题定制系统
+
+### 实现方案
+- CSS 变量实现主题定制
+- 颜色配置持久化存储
+- 实时预览主题效果
+
+### 支持的定制项
+- 主色调
+- 成功色
+- 警告色
+- 危险色
+- 信息色
+- 背景色
+- 卡片背景色
+- 文字颜色
